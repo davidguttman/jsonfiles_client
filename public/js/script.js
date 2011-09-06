@@ -1,30 +1,22 @@
 (function() {
-  var BASE_URL, Directory, init_soundmanager;
-  BASE_URL = 'http://url';
-  Directory = (function() {
-    function Directory(path) {
-      var opts;
-      this.path = path;
-      opts = {
-        dataType: 'jsonp',
-        data: {
-          path: this.path,
-          format: 'json'
-        },
-        success: function(data) {
-          return console.log("data: ", data);
-        }
-      };
-      $.ajax(BASE_URL, opts);
+  var init_soundmanager;
+  window.BASE_URL = 'http://url';
+  window.CURRENT_ROUTE = '/';
+  window.RemoteFile = Backbone.Model.extend();
+  window.RemoteFiles = Backbone.Collection.extend({
+    model: RemoteFile,
+    url: function() {
+      return BASE_URL + '?format=json&callback=?&path=' + CURRENT_ROUTE;
     }
-    return Directory;
-  })();
+  });
   window.FilesClient = Backbone.Router.extend({
     routes: {
       '*path': 'default'
     },
     initialize: function() {},
     "default": function(params) {
+      var CURRENT_ROUTE;
+      CURRENT_ROUTE = params;
       $('#main').empty();
       return $('#main').append(params);
     },
