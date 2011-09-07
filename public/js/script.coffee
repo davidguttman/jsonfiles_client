@@ -5,6 +5,9 @@ window.BASE_URL = 'http://url'
 
 window.CURRENT_ROUTE = '/'
 
+window.SORT_TYPE = 'alpha'
+window.SORT_ORDER = 'desc'
+
 window.RemoteFile = Backbone.Model.extend()
 
 window.RemoteFiles = Backbone.Collection.extend
@@ -28,7 +31,18 @@ window.RemoteFiles = Backbone.Collection.extend
       model.toJSON()
       
   comparator: (file) ->
-    (file.get 'name').toLowerCase()
+    if window.SORT_TYPE == 'date'
+      criteria = Date.parse (file.get 'mtime')
+
+      if window.SORT_ORDER == 'desc'
+        criteria = -criteria
+
+    if window.SORT_TYPE == 'alpha'
+      criteria = (file.get 'name').toLowerCase()  
+      
+    
+    return criteria
+    
 
 window.RemoteFilesView = Backbone.View.extend
   template: _.template $('#remote_files-template').html()
@@ -117,20 +131,23 @@ update_ui = ->
   
   $('.sort').button()
   $('.sort').click ->
-    lis = $(@).parent().find('li')
-    lis.sortElements (a, b) ->
-      if $(a).text().toLowerCase() < $(b).text().toLowerCase()
-        return 1
-      else 
-        return -1
-        
+    if window.SORT_TYPE == 'alpha'
+      $('.sort').text('Sort:Date')
+      window.SORT_TYPE = 'date'
+    else
+      $('.sort').text('Sort:Alpha')
+      window.SORT_TYPE = 'alpha'
+    
+    window.currentFiles.sort()
+
   $('.reverse').button()
   $('.reverse').click ->
-    ul = $(@).parent().find('ul')
-    lis = ul.children('li')
-    lis.each ->
-      $(this).prependTo ul
-    
+    if window.SORT_ORDER == 'desc'
+      window.SORT_ORDER = 'asc'
+    else
+      window.SORT_ORDER = 'desc'
+  
+    window.currentFiles.sort()
   
   $('.queue_all').click ->
     links = $('.file.mp3 a')

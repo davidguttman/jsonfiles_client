@@ -21,13 +21,13 @@
     <div class="directories">
       <h3>Directories</h3>
       <button class='sort'>Sort</button>
+      <button class='reverse'>Reverse</button>
+      <button class='directory_up'>..</button>
+      <hr/>
+      
       <ul>
-        <li class="directory_up">
-          <a>..</a>        
-        </li>
-        <hr/>
         <% _.each(directories, function(directory) { %>
-          <li class="directory">
+          <li class="directory" data-mtime="<%= directory.mtime %>">
             <a href="#<%= directory.target_path %>"><%= directory.name %></a>
           </li>
         <% }); %>
@@ -38,9 +38,10 @@
       <h3>Files</h3>
       <button class='sort'>Sort</button>
       <button class='reverse'>Reverse</button>
+      <button class='queue_all'>Queue All</button>
+      <hr/>
+      
       <ul>
-        <li class="queue_all"><a>Queue All</a></li>
-        <hr/>
         <% _.each(files, function(file) { %>
           <li class="file <%= file.extname %>" data-mtime="<%= file.mtime %>">
             <a href="<%= window.BASE_URL %>/?path=<%= file.target_path %>"><%= file.name %></a>

@@ -5,6 +5,8 @@
   });
   window.BASE_URL = 'http://url';
   window.CURRENT_ROUTE = '/';
+  window.SORT_TYPE = 'alpha';
+  window.SORT_ORDER = 'desc';
   window.RemoteFile = Backbone.Model.extend();
   window.RemoteFiles = Backbone.Collection.extend({
     model: RemoteFile,
@@ -37,7 +39,17 @@
       });
     },
     comparator: function(file) {
-      return (file.get('name')).toLowerCase();
+      var criteria;
+      if (window.SORT_TYPE === 'date') {
+        criteria = Date.parse(file.get('mtime'));
+        if (window.SORT_ORDER === 'desc') {
+          criteria = -criteria;
+        }
+      }
+      if (window.SORT_TYPE === 'alpha') {
+        criteria = (file.get('name')).toLowerCase();
+      }
+      return criteria;
     }
   });
   window.RemoteFilesView = Backbone.View.extend({
@@ -129,24 +141,23 @@
     });
     $('.sort').button();
     $('.sort').click(function() {
-      var lis;
-      lis = $(this).parent().find('li');
-      return lis.sortElements(function(a, b) {
-        if ($(a).text().toLowerCase() < $(b).text().toLowerCase()) {
-          return 1;
-        } else {
-          return -1;
-        }
-      });
+      if (window.SORT_TYPE === 'alpha') {
+        $('.sort').text('Sort:Date');
+        window.SORT_TYPE = 'date';
+      } else {
+        $('.sort').text('Sort:Alpha');
+        window.SORT_TYPE = 'alpha';
+      }
+      return window.currentFiles.sort();
     });
     $('.reverse').button();
     $('.reverse').click(function() {
-      var lis, ul;
-      ul = $(this).parent().find('ul');
-      lis = ul.children('li');
-      return lis.each(function() {
-        return $(this).prependTo(ul);
-      });
+      if (window.SORT_ORDER === 'desc') {
+        window.SORT_ORDER = 'asc';
+      } else {
+        window.SORT_ORDER = 'desc';
+      }
+      return window.currentFiles.sort();
     });
     $('.queue_all').click(function() {
       var links;
