@@ -32,6 +32,26 @@ h3 {
   font-size: 150%;
 }
 
+#listings {
+  width: 66%;
+  float: left;
+}
+
+#player {
+  width: 33%;
+  text-align: center;
+  float: left;
+}
+
+ul.playlist {
+  width: 90%;
+  margin: 0 auto;
+}
+
+ul.playlist li a {
+  font-size: 100%;
+}
+
 .files, .directories {
   width: 50%;
   float: left;  

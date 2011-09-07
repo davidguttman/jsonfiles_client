@@ -46,6 +46,7 @@
         directories: this.collection.directories(),
         files: this.collection.files()
       }));
+      $('#current_route').html(window.CURRENT_ROUTE);
       init_ui();
       return this;
     }
@@ -60,8 +61,8 @@
       this.remoteFilesView = new RemoteFilesView({
         collection: new RemoteFiles()
       });
-      $('#main').empty();
-      return $('#main').append(this.remoteFilesView.render().el);
+      $('#listings').empty();
+      return $('#listings').append(this.remoteFilesView.render().el);
     },
     blank: function() {
       $('#main').empty();
@@ -70,10 +71,26 @@
   });
   init_soundmanager = function() {
     soundManager.useFlashBlock = true;
-    return soundManager.url = '/swf/';
+    soundManager.url = '/swf/';
+    return soundManager.onready(function() {
+      window.pagePlayer = new PagePlayer();
+      return window.pagePlayer.init();
+    });
   };
   init_ui = function() {
-    return $('.file a, .directory a').button().width('100%');
+    var buttons;
+    buttons = $('.file a, .directory a');
+    buttons.button();
+    buttons.width('100%');
+    return $('.file a').click(function() {
+      var el, href, link, text;
+      el = $(this);
+      link = el;
+      href = link.attr('href');
+      text = link.text();
+      $('.playlist').append("<li><a href=\"" + href + "\">" + text + "</a></li>");
+      return false;
+    });
   };
   $(document).ready(function() {
     init_soundmanager();

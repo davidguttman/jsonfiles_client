@@ -40,7 +40,10 @@ window.RemoteFilesView = Backbone.View.extend
       directories: @collection.directories()
       files: @collection.files()
 
+    $('#current_route').html(window.CURRENT_ROUTE)
+
     init_ui()
+    
     return this
 
 window.FilesClient = Backbone.Router.extend
@@ -54,8 +57,8 @@ window.FilesClient = Backbone.Router.extend
       @remoteFilesView = new RemoteFilesView
         collection: new RemoteFiles()
       
-      $('#main').empty()
-      $('#main').append @remoteFilesView.render().el
+      $('#listings').empty()
+      $('#listings').append @remoteFilesView.render().el
 
     blank: () ->
       $('#main').empty()
@@ -65,8 +68,24 @@ init_soundmanager = ->
   soundManager.useFlashBlock = true
   soundManager.url = '/swf/'
   
+  soundManager.onready ->
+    window.pagePlayer = new PagePlayer()
+    window.pagePlayer.init()
+  
 init_ui = ->
-  $('.file a, .directory a').button().width('100%')
+  buttons = $('.file a, .directory a')
+  buttons.button()
+  buttons.width('100%')
+
+  $('.file a').click ->
+    el = $(@)
+    link = el
+    href = link.attr('href')
+    text = link.text()
+    $('.playlist').append "<li><a href=\"#{href}\">#{text}</a></li>"
+    return false
+  
+  
   
 $(document).ready ->
   init_soundmanager()

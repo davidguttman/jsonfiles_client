@@ -12,14 +12,12 @@
   <link rel="shortcut icon" href="/favicon.ico">
 
   <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/page-player.css">
   <link rel="stylesheet" href="/css/cupertino/jquery-ui-1.8.16.custom.css">
   <link rel="stylesheet" href="/css/style.css">
   
   
   <script type="text/template" id="remote_files-template">
-
-    <h1><%= window.CURRENT_ROUTE %></h1>
-
     <div class="directories">
       <h3>Directories</h3>
       <ul>
@@ -56,7 +54,14 @@
     </header>
     
     <div id="main">
+      <h1 id="current_route"></h1>
       
+      <div id="listings"></div>
+      <div id="player">
+        <h3>Playlist</h3>
+        <ul class="playlist">
+        </ul>
+      </div>
     </div>
     
     <footer>
@@ -68,11 +73,12 @@
   <script src="/js/vendor/jquery-1.6.2.min.js"></script>
   <script src="/js/vendor/underscore.js"></script>
   <script src="/js/vendor/backbone-min.js"></script>
-    <script src="/js/vendor/jquery-ui-1.8.16.custom.min.js"></script>
+  <script src="/js/vendor/jquery-ui-1.8.16.custom.min.js"></script>
   <script src="/js/vendor/soundmanager2-nodebug-jsmin.js"></script>
   
-  <!-- <script src="/js/page-player.js"></script>
-  <script src="/js/plugins.js"></script> -->
+  <script src="/js/vendor/sm-page_player.js"></script>
+  <script src="/js/vendor/sm-playlist.js"></script>
+  
   <script src="/js/script.js"></script>
 </body>
 </html>
