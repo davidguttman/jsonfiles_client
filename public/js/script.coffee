@@ -33,10 +33,11 @@ window.RemoteFilesView = Backbone.View.extend
     @collection.fetch()
     
   render: () ->
-    directories = @collection.directories()
-    console.log "directories: ", directories
     
-    $(@el).html(@template(directories: directories))
+    $(@el).html @template
+      directories: @collection.directories()
+      files: @collection.files()
+
     return this
 
 window.FilesClient = Backbone.Router.extend

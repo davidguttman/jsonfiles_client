@@ -38,11 +38,9 @@
       return this.collection.fetch();
     },
     render: function() {
-      var directories;
-      directories = this.collection.directories();
-      console.log("directories: ", directories);
       $(this.el).html(this.template({
-        directories: directories
+        directories: this.collection.directories(),
+        files: this.collection.files()
       }));
       return this;
     }

@@ -17,14 +17,31 @@
   
   
   <script type="text/template" id="remote_files-template">
-    <h1>Directories</h1>
-    <ul class="directories">
-      <% _.each(directories, function(directory) { %>
-        <li>
-          <a href="#/<%= directory.target_path %>"><%= directory.name %></a>
-        </li>
-      <% }); %>
-    </ul>
+
+    <h1><%= window.CURRENT_ROUTE %></h1>
+
+    <div class="directories">
+      <h3>Directories</h3>
+      <ul>
+        <% _.each(directories, function(directory) { %>
+          <li>
+            <a href="#/<%= directory.target_path %>"><%= directory.name %></a>
+          </li>
+        <% }); %>
+      </ul>
+    </div>
+    
+    <div class="files">
+      <h3>Files</h3>
+      <ul>
+        <% _.each(files, function(file) { %>
+          <li>
+            <a href="<%= window.BASE_URL %>/?path=<%= file.target_path %>"><%= file.name %></a>
+          </li>
+        <% }); %>
+      </ul>
+    </div>
+    
   </script>
   
 </head>
