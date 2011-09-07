@@ -21,9 +21,10 @@
     <div class="directories">
       <h3>Directories</h3>
       <ul>
-        <li class="directory back">
-          <a href="#<%= window.CURRENT_ROUTE %>/..">[ .. ]</a>        
+        <li class="directory_up">
+          <a>..</a>        
         </li>
+        <hr/>
         <% _.each(directories, function(directory) { %>
           <li class="directory">
             <a href="#<%= directory.target_path %>"><%= directory.name %></a>
@@ -35,6 +36,8 @@
     <div class="files">
       <h3>Files</h3>
       <ul>
+        <li class="queue_all"><a>Queue All</a></li>
+        <hr/>
         <% _.each(files, function(file) { %>
           <li class="file <%= file.extname %>">
             <a href="<%= window.BASE_URL %>/?path=<%= file.target_path %>"><%= file.name %></a>
@@ -59,6 +62,8 @@
       <div id="listings"></div>
       <div id="player">
         <h3>Playlist</h3>
+        <button class="clear_playlist">Clear</button>
+        <hr />
         <ul class="playlist">
         </ul>
       </div>

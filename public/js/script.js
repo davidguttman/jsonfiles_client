@@ -1,6 +1,9 @@
 (function() {
-  var init_soundmanager, init_ui;
-  window.BASE_URL = 'http://localhost:3000';
+  var init_soundmanager, update_ui;
+  $.ajaxSetup({
+    cache: true
+  });
+  window.BASE_URL = 'http://url';
   window.CURRENT_ROUTE = '/';
   window.RemoteFile = Backbone.Model.extend();
   window.RemoteFiles = Backbone.Collection.extend({
@@ -32,6 +35,9 @@
       return _.map(models, function(model) {
         return model.toJSON();
       });
+    },
+    comparator: function(file) {
+      return file.get('name');
     }
   });
   window.RemoteFilesView = Backbone.View.extend({
@@ -42,12 +48,12 @@
       return this.collection.fetch();
     },
     render: function() {
+      console.log('RENDERING...');
       $(this.el).html(this.template({
         directories: this.collection.directories(),
         files: this.collection.files()
       }));
-      $('#current_route').html(window.CURRENT_ROUTE);
-      init_ui();
+      update_ui();
       return this;
     }
   });
@@ -56,10 +62,13 @@
       '*path': 'default'
     },
     "default": function(params) {
-      console.log("params: ", params);
+      if (params.length <= 0) {
+        params = '/';
+      }
       window.CURRENT_ROUTE = params;
+      window.currentFiles = new RemoteFiles();
       this.remoteFilesView = new RemoteFilesView({
-        collection: new RemoteFiles()
+        collection: window.currentFiles
       });
       $('#listings').empty();
       return $('#listings').append(this.remoteFilesView.render().el);
@@ -77,12 +86,13 @@
       return window.pagePlayer.init();
     });
   };
-  init_ui = function() {
+  update_ui = function() {
     var buttons;
+    $('#current_route').html(window.CURRENT_ROUTE);
     buttons = $('.file a, .directory a');
     buttons.button();
     buttons.width('100%');
-    return $('.file a').click(function() {
+    $('.file.mp3 a').click(function() {
       var el, href, link, text;
       el = $(this);
       link = el;
@@ -91,6 +101,47 @@
       $('.playlist').append("<li><a href=\"" + href + "\">" + text + "</a></li>");
       return false;
     });
+    $('.directory_up').button({
+      icons: {
+        primary: 'ui-icon-arrowreturnthick-1-n'
+      }
+    });
+    $('.directory_up').click(function() {
+      var route_chunks, up_route;
+      route_chunks = window.CURRENT_ROUTE.split('/');
+      up_route = route_chunks.slice(0, route_chunks.length - 1).join('/');
+      return window.App.navigate("#" + up_route, true);
+    });
+    $('.clear_playlist').button({
+      icons: {
+        primary: 'ui-icon-closethick'
+      }
+    });
+    $('.clear_playlist').click(function() {
+      $('.playlist').empty();
+      return window.pagePlayer.stopSound(window.pagePlayer.lastSound);
+    });
+    $('.queue_all').button({
+      icons: {
+        primary: 'ui-icon-transferthick-e-w'
+      }
+    });
+    $('.queue_all').click(function() {
+      var links;
+      links = $('.file.mp3 a');
+      links.each(function(i, ele) {
+        var href, link, text;
+        link = $(ele);
+        href = link.attr('href');
+        text = link.text();
+        return $('.playlist').append("<li><a href=\"" + href + "\">" + text + "</a></li>");
+      });
+      return false;
+    });
+    $('.file span, .directory span').css('overflow', 'hidden');
+    return $('.file span, .directory span').hover(function() {
+      return $(this).attr('title', $(this).text());
+    });
   };
   $(document).ready(function() {
     init_soundmanager();
@@ -98,6 +149,6 @@
     Backbone.history.start({
       pushState: false
     });
-    return init_ui();
+    return update_ui();
   });
 }).call(this);

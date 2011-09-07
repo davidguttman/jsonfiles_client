@@ -1,5 +1,7 @@
-# window.BASE_URL = 'http://url'
-window.BASE_URL = 'http://localhost:3000'
+$.ajaxSetup cache: true 
+
+# window.BASE_URL = 'http://localhost:3000'
+window.BASE_URL = 'http://url'
 
 window.CURRENT_ROUTE = '/'
 
@@ -24,45 +26,48 @@ window.RemoteFiles = Backbone.Collection.extend
       !file.get 'directory?'
     _.map models, (model) ->
       model.toJSON()
+      
+  comparator: (file) ->
+    file.get 'name'
 
 window.RemoteFilesView = Backbone.View.extend
-  # tagName: 'section'
-  # className: 'directories'
   template: _.template $('#remote_files-template').html()
+
   initialize: () ->
     _.bindAll this, 'render'
     @collection.bind 'reset', @render
     @collection.fetch()
     
   render: () ->
+    console.log 'RENDERING...'
     
     $(@el).html @template
       directories: @collection.directories()
       files: @collection.files()
 
-    $('#current_route').html(window.CURRENT_ROUTE)
-
-    init_ui()
+    update_ui()
     
     return this
 
 window.FilesClient = Backbone.Router.extend
-    routes:
-      '*path': 'default'
+  routes:
+    '*path': 'default'
 
-    default: (params) ->
-      console.log "params: ", params
-      window.CURRENT_ROUTE = params
+  default: (params) ->
+    params = '/' if params.length <= 0
+    window.CURRENT_ROUTE = params
 
-      @remoteFilesView = new RemoteFilesView
-        collection: new RemoteFiles()
-      
-      $('#listings').empty()
-      $('#listings').append @remoteFilesView.render().el
+    window.currentFiles = new RemoteFiles()
 
-    blank: () ->
-      $('#main').empty()
-      $('#main').text('blank')
+    @remoteFilesView = new RemoteFilesView
+      collection: window.currentFiles
+    
+    $('#listings').empty()
+    $('#listings').append @remoteFilesView.render().el
+
+  blank: () ->
+    $('#main').empty()
+    $('#main').text('blank')
     
 init_soundmanager = ->
   soundManager.useFlashBlock = true
@@ -72,21 +77,56 @@ init_soundmanager = ->
     window.pagePlayer = new PagePlayer()
     window.pagePlayer.init()
   
-init_ui = ->
+update_ui = ->
+  $('#current_route').html(window.CURRENT_ROUTE)
+
   buttons = $('.file a, .directory a')
   buttons.button()
   buttons.width('100%')
 
-  $('.file a').click ->
+  $('.file.mp3 a').click ->
     el = $(@)
     link = el
     href = link.attr('href')
     text = link.text()
     $('.playlist').append "<li><a href=\"#{href}\">#{text}</a></li>"
     return false
+
+  $('.directory_up').button
+    icons:
+      primary: 'ui-icon-arrowreturnthick-1-n'
   
+  $('.directory_up').click ->
+    route_chunks = window.CURRENT_ROUTE.split '/'
+    up_route = route_chunks.slice(0, route_chunks.length-1).join('/')
+    window.App.navigate("##{up_route}", true)
+
+  $('.clear_playlist').button
+    icons:
+      primary: 'ui-icon-closethick'
+      
+  $('.clear_playlist').click ->
+    $('.playlist').empty()
+    window.pagePlayer.stopSound(window.pagePlayer.lastSound)
+
+  $('.queue_all').button
+    icons:
+      primary: 'ui-icon-transferthick-e-w'
   
+  $('.queue_all').click ->
+    links = $('.file.mp3 a')
+    links.each (i, ele) ->
+      link = $(ele)
+      href = link.attr('href')
+      text = link.text()
+      $('.playlist').append "<li><a href=\"#{href}\">#{text}</a></li>"
+    return false
   
+  $('.file span, .directory span').css('overflow', 'hidden')
+  $('.file span, .directory span').hover ->
+    $(this).attr('title', $(this).text())
+
+
 $(document).ready ->
   init_soundmanager()
   
@@ -94,4 +134,4 @@ $(document).ready ->
   Backbone.history.start
     pushState: false
 
-  init_ui()
+  update_ui()
