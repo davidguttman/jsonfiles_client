@@ -24,7 +24,7 @@
       <h3>Directories</h3>
       <ul>
         <% _.each(directories, function(directory) { %>
-          <li>
+          <li class="directory">
             <a href="#/<%= directory.target_path %>"><%= directory.name %></a>
           </li>
         <% }); %>
@@ -35,7 +35,7 @@
       <h3>Files</h3>
       <ul>
         <% _.each(files, function(file) { %>
-          <li>
+          <li class="file <%= file.extname %>">
             <a href="<%= window.BASE_URL %>/?path=<%= file.target_path %>"><%= file.name %></a>
           </li>
         <% }); %>

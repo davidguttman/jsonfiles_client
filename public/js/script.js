@@ -29,8 +29,6 @@
     }
   });
   window.RemoteFilesView = Backbone.View.extend({
-    tagName: 'section',
-    className: 'directories',
     template: _.template($('#remote_files-template').html()),
     initialize: function() {
       _.bindAll(this, 'render');

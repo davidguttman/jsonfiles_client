@@ -24,8 +24,8 @@ window.RemoteFiles = Backbone.Collection.extend
       model.toJSON()
 
 window.RemoteFilesView = Backbone.View.extend
-  tagName: 'section'
-  className: 'directories'
+  # tagName: 'section'
+  # className: 'directories'
   template: _.template $('#remote_files-template').html()
   initialize: () ->
     _.bindAll this, 'render'

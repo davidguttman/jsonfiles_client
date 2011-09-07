@@ -1,75 +1,19 @@
-body {
-  background-color: #fff;
+#container {
   text-align: center;
 }
 
-h1 {
-  font-size: 3em;
-  margin: 25px;
-}
-
-#playlist_location {
-  width: 80%;
-  margin: 20px auto;
-  font-size: 2em;
-}
-
-#playlist_url {
-  width: 100%;
-  border: 1px solid #ddd;
-  padding: 15px;
-  margin: 5px;
-}
-
-#load_playlist {
-  padding: 2px;
-}
-
-.jp-audio {
-  margin: 20px auto;
-}
-
-#toggle_history {
-  color: #007Bc3;
-  font-weight: bold;
-/*  position: fixed;
-  top: 5px;
-  left: 5px;*/
-  width: 400px;
+#main {
   margin: 0 auto;
-  padding: 10px;
-  z-index: 10;
-  cursor: pointer;
-  border: 1px solid #007Bc3;
+  width: 920px;
+  text-align: left;
 }
 
-#toggle_history:hover {
-  color: #fff;
-  background-color: #007bc3;
+.files {
+  width: 40%;
+  float: left;
 }
 
-#playlist_history {
-/*  width: 400px;*/
-/*  margin: 20px auto;*/
-  display: none;
-  padding: 10px;
-  font-size: 2em;
-/*  border: 1px solid #009BE3;*/
-}
-
-#playlist_history h4{
-  margin-bottom: 5px;
-}
-
-.previous_playlist {
-  cursor: pointer;
-  color: #007Bc3;
-  border-top: 1px dotted #d9d9d9;
-  padding: 5px;
-  font-size: 120%;
-}
-
-.previous_playlist:hover {
-  color: #fff;
-  background-color: #007bc3;
+.directories {
+  width: 40%;
+  float: left;
 }
