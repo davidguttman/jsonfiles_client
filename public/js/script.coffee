@@ -13,12 +13,14 @@ window.RemoteFiles = Backbone.Collection.extend
   
   directories: () ->
     models = @.select (file) ->
+      return false if (file.get 'name').match /^\./
       file.get 'directory?'
     _.map models, (model) ->
       model.toJSON()
   
   files: () ->
     models = @.select (file) ->
+      return false if (file.get 'name').match /^\./
       !file.get 'directory?'
     _.map models, (model) ->
       model.toJSON()
@@ -38,6 +40,7 @@ window.RemoteFilesView = Backbone.View.extend
       directories: @collection.directories()
       files: @collection.files()
 
+    init_ui()
     return this
 
 window.FilesClient = Backbone.Router.extend
@@ -62,25 +65,14 @@ init_soundmanager = ->
   soundManager.useFlashBlock = true
   soundManager.url = '/swf/'
   
+init_ui = ->
+  $('.file a, .directory a').button().width('100%')
+  
 $(document).ready ->
   init_soundmanager()
   
   window.App = new FilesClient()
   Backbone.history.start
     pushState: false
-    
 
-  
-  
-  
-  # class Directory
-  #   constructor: (@path) ->
-  #     opts = 
-  #       dataType: 'jsonp'
-  #       data:
-  #         path: @path
-  #         format: 'json'
-  #       success: (data) ->
-  #         console.log "data: ", data            
-  #       
-  #     $.ajax BASE_URL, opts
+  init_ui()

@@ -1,19 +1,43 @@
-#container {
+body {
   text-align: center;
+}
+
+#container {
+  margin: 0 auto;
 }
 
 #main {
   margin: 0 auto;
-  width: 920px;
+  width: 90%;
   text-align: left;
 }
 
-.files {
-  width: 40%;
-  float: left;
+li {
+  list-style: none;
 }
 
-.directories {
-  width: 40%;
-  float: left;
+h1, h2, h3 {
+  text-align: center;
 }
+
+h1 {
+  font-size: 300%;
+}
+
+h2 {
+  font-size: 200%;
+}
+
+h3 {
+  font-size: 150%;
+}
+
+.files, .directories {
+  width: 50%;
+  float: left;  
+  text-align: left;
+}
+
+.files {}
+
+.directories {}

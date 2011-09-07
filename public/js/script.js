@@ -1,5 +1,5 @@
 (function() {
-  var init_soundmanager;
+  var init_soundmanager, init_ui;
   window.BASE_URL = 'http://localhost:3000';
   window.CURRENT_ROUTE = '/';
   window.RemoteFile = Backbone.Model.extend();
@@ -12,6 +12,9 @@
     directories: function() {
       var models;
       models = this.select(function(file) {
+        if ((file.get('name')).match(/^\./)) {
+          return false;
+        }
         return file.get('directory?');
       });
       return _.map(models, function(model) {
@@ -21,6 +24,9 @@
     files: function() {
       var models;
       models = this.select(function(file) {
+        if ((file.get('name')).match(/^\./)) {
+          return false;
+        }
         return !file.get('directory?');
       });
       return _.map(models, function(model) {
@@ -40,6 +46,7 @@
         directories: this.collection.directories(),
         files: this.collection.files()
       }));
+      init_ui();
       return this;
     }
   });
@@ -65,11 +72,15 @@
     soundManager.useFlashBlock = true;
     return soundManager.url = '/swf/';
   };
+  init_ui = function() {
+    return $('.file a, .directory a').button().width('100%');
+  };
   $(document).ready(function() {
     init_soundmanager();
     window.App = new FilesClient();
-    return Backbone.history.start({
+    Backbone.history.start({
       pushState: false
     });
+    return init_ui();
   });
 }).call(this);
