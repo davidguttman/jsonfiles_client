@@ -25,7 +25,7 @@
       <ul>
         <% _.each(directories, function(directory) { %>
           <li class="directory">
-            <a href="#/<%= directory.target_path %>"><%= directory.name %></a>
+            <a href="#<%= directory.target_path %>"><%= directory.name %></a>
           </li>
         <% }); %>
       </ul>
