@@ -37,7 +37,7 @@
       });
     },
     comparator: function(file) {
-      return file.get('name');
+      return (file.get('name')).toLowerCase();
     }
   });
   window.RemoteFilesView = Backbone.View.extend({
@@ -67,9 +67,10 @@
       }
       window.CURRENT_ROUTE = params;
       window.currentFiles = new RemoteFiles();
-      this.remoteFilesView = new RemoteFilesView({
+      window.currentView = new RemoteFilesView({
         collection: window.currentFiles
       });
+      this.remoteFilesView = window.currentView;
       $('#listings').empty();
       return $('#listings').append(this.remoteFilesView.render().el);
     },
@@ -125,6 +126,27 @@
       icons: {
         primary: 'ui-icon-transferthick-e-w'
       }
+    });
+    $('.sort').button();
+    $('.sort').click(function() {
+      var lis;
+      lis = $(this).parent().find('li');
+      return lis.sortElements(function(a, b) {
+        if ($(a).text().toLowerCase() < $(b).text().toLowerCase()) {
+          return 1;
+        } else {
+          return -1;
+        }
+      });
+    });
+    $('.reverse').button();
+    $('.reverse').click(function() {
+      var lis, ul;
+      ul = $(this).parent().find('ul');
+      lis = ul.children('li');
+      return lis.each(function() {
+        return $(this).prependTo(ul);
+      });
     });
     $('.queue_all').click(function() {
       var links;

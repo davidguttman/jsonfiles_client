@@ -28,7 +28,7 @@ window.RemoteFiles = Backbone.Collection.extend
       model.toJSON()
       
   comparator: (file) ->
-    file.get 'name'
+    (file.get 'name').toLowerCase()
 
 window.RemoteFilesView = Backbone.View.extend
   template: _.template $('#remote_files-template').html()
@@ -58,9 +58,11 @@ window.FilesClient = Backbone.Router.extend
     window.CURRENT_ROUTE = params
 
     window.currentFiles = new RemoteFiles()
-
-    @remoteFilesView = new RemoteFilesView
+    window.currentView = new RemoteFilesView
       collection: window.currentFiles
+      
+    @remoteFilesView = window.currentView
+
     
     $('#listings').empty()
     $('#listings').append @remoteFilesView.render().el
@@ -112,6 +114,23 @@ update_ui = ->
   $('.queue_all').button
     icons:
       primary: 'ui-icon-transferthick-e-w'
+  
+  $('.sort').button()
+  $('.sort').click ->
+    lis = $(@).parent().find('li')
+    lis.sortElements (a, b) ->
+      if $(a).text().toLowerCase() < $(b).text().toLowerCase()
+        return 1
+      else 
+        return -1
+        
+  $('.reverse').button()
+  $('.reverse').click ->
+    ul = $(@).parent().find('ul')
+    lis = ul.children('li')
+    lis.each ->
+      $(this).prependTo ul
+    
   
   $('.queue_all').click ->
     links = $('.file.mp3 a')

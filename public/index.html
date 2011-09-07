@@ -20,6 +20,7 @@
   <script type="text/template" id="remote_files-template">
     <div class="directories">
       <h3>Directories</h3>
+      <button class='sort'>Sort</button>
       <ul>
         <li class="directory_up">
           <a>..</a>        
@@ -35,11 +36,13 @@
     
     <div class="files">
       <h3>Files</h3>
+      <button class='sort'>Sort</button>
+      <button class='reverse'>Reverse</button>
       <ul>
         <li class="queue_all"><a>Queue All</a></li>
         <hr/>
         <% _.each(files, function(file) { %>
-          <li class="file <%= file.extname %>">
+          <li class="file <%= file.extname %>" data-mtime="<%= file.mtime %>">
             <a href="<%= window.BASE_URL %>/?path=<%= file.target_path %>"><%= file.name %></a>
           </li>
         <% }); %>
@@ -84,6 +87,7 @@
   <script src="/js/vendor/sm-page_player.js"></script>
   <script src="/js/vendor/sm-playlist.js"></script>
   
+  <script src="/js/plugins.js"></script>
   <script src="/js/script.js"></script>
 </body>
 </html>
