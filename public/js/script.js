@@ -3,7 +3,6 @@
   $.ajaxSetup({
     cache: true
   });
-  window.BASE_URL = 'http://url';
   window.CURRENT_ROUTE = '/';
   window.SORT_TYPE = 'alpha';
   window.SORT_ORDER = 'desc';
