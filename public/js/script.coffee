@@ -1,8 +1,5 @@
 $.ajaxSetup cache: true 
 
-# window.BASE_URL = 'http://localhost:3000'
-window.BASE_URL = 'http://url'
-
 window.CURRENT_ROUTE = '/'
 
 window.SORT_TYPE = 'alpha'
@@ -13,8 +10,9 @@ window.RemoteFile = Backbone.Model.extend()
 window.RemoteFiles = Backbone.Collection.extend
   model: RemoteFile,
   url: () ->
+    route = escape window.CURRENT_ROUTE
     console.log "window.CURRENT_ROUTE: ", window.CURRENT_ROUTE
-    window.BASE_URL + '?format=json&callback=?&path=' + window.CURRENT_ROUTE
+    window.BASE_URL + '?format=json&callback=?&path=' + route
   
   directories: () ->
     models = @.select (file) ->

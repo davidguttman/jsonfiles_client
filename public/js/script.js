@@ -11,8 +11,10 @@
   window.RemoteFiles = Backbone.Collection.extend({
     model: RemoteFile,
     url: function() {
+      var route;
+      route = escape(window.CURRENT_ROUTE);
       console.log("window.CURRENT_ROUTE: ", window.CURRENT_ROUTE);
-      return window.BASE_URL + '?format=json&callback=?&path=' + window.CURRENT_ROUTE;
+      return window.BASE_URL + '?format=json&callback=?&path=' + route;
     },
     directories: function() {
       var models;

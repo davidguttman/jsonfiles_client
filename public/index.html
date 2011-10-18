@@ -44,7 +44,7 @@
       <ul>
         <% _.each(files, function(file) { %>
           <li class="file <%= file.extname %>" data-mtime="<%= file.mtime %>">
-            <a href="<%= window.BASE_URL %>/?path=<%= file.target_path %>"><%= file.name %></a>
+            <a href="<%= window.BASE_URL %>/?path=<%= escape(file.target_path) %>"><%= file.name %></a>
           </li>
         <% }); %>
       </ul>
@@ -89,6 +89,7 @@
   <script src="/js/vendor/sm-playlist.js"></script>
   
   <script src="/js/plugins.js"></script>
+  <script src="/js/config/config.js"></script>
   <script src="/js/script.js"></script>
 </body>
 </html>
