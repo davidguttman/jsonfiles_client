@@ -20,34 +20,48 @@
   <script type="text/template" id="remote_files-template">
     <div class="directories">
       <h3>Directories</h3>
-      <button class='sort'>Sort</button>
-      <button class='reverse'>Reverse</button>
       <button class='directory_up'>..</button>
       <hr/>
       
-      <ul>
-        <% _.each(directories, function(directory) { %>
-          <li class="directory" data-mtime="<%= directory.mtime %>">
-            <a href="#<%= directory.target_path %>"><%= directory.name %></a>
-          </li>
-        <% }); %>
-      </ul>
+      <table>
+        <thead>
+          <tr>
+            <th>Directory</th>
+            <th>MTime</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% _.each(directories, function(directory) { %>
+            <tr>
+              <td><a href="#<%= directory.target_path %>"><%= directory.name %></a></td>
+              <td><%= new Date(Date.parse(directory.mtime)).strftime("%Y-%m-%d") %></td>
+            </tr>
+          <% }); %>
+        </tbody>
+      </table>
     </div>
     
     <div class="files">
       <h3>Files</h3>
-      <button class='sort'>Sort</button>
-      <button class='reverse'>Reverse</button>
       <button class='queue_all'>Queue All</button>
       <hr/>
       
-      <ul>
-        <% _.each(files, function(file) { %>
-          <li class="file <%= file.extname %>" data-mtime="<%= file.mtime %>">
-            <a href="<%= window.BASE_URL %>/?path=<%= escape(file.target_path) %>"><%= file.name %></a>
-          </li>
-        <% }); %>
-      </ul>
+      <table>
+        <thead>
+          <tr>
+            <th>File</th>
+            <th>MTime</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% _.each(files, function(file) { %>
+            <tr>
+              <td><a class="file <%= file.extname %>" href="<%= window.BASE_URL %>/?path=<%= escape(file.target_path) %>"><%= file.name %></a></td>
+              <td><%= new Date(Date.parse(file.mtime)).strftime("%Y-%m-%d") %></td>
+            </tr>
+          <% }); %>
+        </tbody>
+      </table>
     </div>
     
   </script>
@@ -80,6 +94,8 @@
   </div> <!-- end of #container -->
 
   <script src="/js/vendor/jquery-1.6.2.min.js"></script>
+  <script src="/js/vendor/jquery.datatables.js"></script>
+  <script src="/js/vendor/strftime.js"></script>
   <script src="/js/vendor/underscore.js"></script>
   <script src="/js/vendor/backbone-min.js"></script>
   <script src="/js/vendor/jquery-ui-1.8.16.custom.min.js"></script>

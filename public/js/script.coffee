@@ -94,11 +94,18 @@ init_soundmanager = ->
 update_ui = ->
   $('#current_route').html(window.CURRENT_ROUTE)
 
-  buttons = $('.file a, .directory a')
+  table_opts = 
+    "bJQueryUI": true
+    "sPaginationType": "full_numbers"
+
+  $('.directories table').dataTable table_opts
+  $('.files table').dataTable table_opts
+
+  buttons = $('a.file, a.directory')
   buttons.button()
   buttons.width('100%')
 
-  $('.file.mp3 a').click ->
+  $('a.file.mp3').click ->
     el = $(@)
     link = el
     href = link.attr('href')
@@ -148,7 +155,7 @@ update_ui = ->
     window.currentFiles.sort()
   
   $('.queue_all').click ->
-    links = $('.file.mp3 a')
+    links = $('a.file.mp3')
     links.each (i, ele) ->
       link = $(ele)
       href = link.attr('href')

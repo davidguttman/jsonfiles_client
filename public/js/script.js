@@ -101,12 +101,18 @@
     });
   };
   update_ui = function() {
-    var buttons;
+    var buttons, table_opts;
     $('#current_route').html(window.CURRENT_ROUTE);
-    buttons = $('.file a, .directory a');
+    table_opts = {
+      "bJQueryUI": true,
+      "sPaginationType": "full_numbers"
+    };
+    $('.directories table').dataTable(table_opts);
+    $('.files table').dataTable(table_opts);
+    buttons = $('a.file, a.directory');
     buttons.button();
     buttons.width('100%');
-    $('.file.mp3 a').click(function() {
+    $('a.file.mp3').click(function() {
       var el, href, link, text;
       el = $(this);
       link = el;
@@ -162,7 +168,7 @@
     });
     $('.queue_all').click(function() {
       var links;
-      links = $('.file.mp3 a');
+      links = $('a.file.mp3');
       links.each(function(i, ele) {
         var href, link, text;
         link = $(ele);
